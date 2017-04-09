@@ -18,11 +18,11 @@
 #include        <fcntl.h>
 #include        <ctype.h>
 
-#if __DMC__ || __linux__
+#if __DMC__ || __linux__ || __HAIKU__
 #include        <malloc.h>
 #endif
 
-#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun || __HAIKU__
 #include        <signal.h>
 #include        <unistd.h>
 #include        <errno.h>

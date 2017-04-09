@@ -85,7 +85,7 @@ void backend_init()
             exe = true;
     }
 #endif
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
     exe = params->pic == 0;
 #endif
 

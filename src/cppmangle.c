@@ -38,7 +38,7 @@
  * so nothing would be compatible anyway.
  */
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
 
 /*
  * Follows Itanium C++ ABI 1.86

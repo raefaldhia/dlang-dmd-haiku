@@ -16,7 +16,7 @@
 #include <limits.h>
 #include <string.h>
 
-#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun || __HAIKU__
 #include <errno.h>
 #endif
 
@@ -125,7 +125,7 @@ static void logo()
 
 static void usage()
 {
-#if TARGET_LINUX
+#if TARGET_LINUX || TARGET_HAIKU
     const char fpic[] ="\
   -fPIC          generate position independent code\n\
 ";
@@ -325,7 +325,7 @@ int tryMain(size_t argc, const char *argv[])
     global.params.mscoff = false;
     global.params.is64bit = false;
     global.params.defaultlibname = "phobos";
-#elif TARGET_LINUX
+#elif TARGET_LINUX || TARGET_HAIKU
     global.params.defaultlibname = "libphobos2.a";
 #elif TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
     global.params.defaultlibname = "phobos2";
@@ -367,6 +367,11 @@ int tryMain(size_t argc, const char *argv[])
     VersionCondition::addPredefinedGlobalIdent("Solaris");
     VersionCondition::addPredefinedGlobalIdent("ELFv1");
     global.params.isSolaris = true;
+#elif TARGET_HAIKU
+    VersionCondition::addPredefinedGlobalIdent("Posix");
+    VersionCondition::addPredefinedGlobalIdent("Haiku");
+    VersionCondition::addPredefinedGlobalIdent("ELFv1");
+    global.params.isHaiku = true;
 #else
 #error "fix this"
 #endif
@@ -386,7 +391,7 @@ int tryMain(size_t argc, const char *argv[])
     {
 #if _WIN32
         global.inifilename = findConfFile(argv[0], "sc.ini");
-#elif __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#elif __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun || __HAIKU__
         global.inifilename = findConfFile(argv[0], "dmd.conf");
 #else
 #error "fix this"
@@ -487,7 +492,7 @@ int tryMain(size_t argc, const char *argv[])
             }
             else if (strcmp(p + 1, "fPIC") == 0)
             {
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
                 global.params.pic = 1;
 #else
                 goto Lerror;
@@ -981,7 +986,7 @@ Language changes listed by -transition=id:\n\
     global.params.pic = 1;
 #endif
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
     if (global.params.lib && global.params.dll)
         error(Loc(), "cannot mix -lib and -shared");
 #endif
@@ -1084,7 +1089,7 @@ Language changes listed by -transition=id:\n\
         VersionCondition::addPredefinedGlobalIdent("CRuntime_Microsoft");
     else
         VersionCondition::addPredefinedGlobalIdent("CRuntime_DigitalMars");
-#elif TARGET_LINUX
+#elif TARGET_LINUX || TARGET_HAIKU
     VersionCondition::addPredefinedGlobalIdent("CRuntime_Glibc");
 #endif
     if (global.params.isLP64)
@@ -1197,7 +1202,7 @@ Language changes listed by -transition=id:\n\
                 continue;
             }
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
             if (FileName::equals(ext, global.dll_ext))
             {
                 global.params.dllfiles->push(files[i]);

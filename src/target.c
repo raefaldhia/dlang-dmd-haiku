@@ -33,7 +33,7 @@ void Target::init()
         ptrsize = 8;
 
     if (global.params.isLinux || global.params.isFreeBSD
-        || global.params.isOpenBSD || global.params.isSolaris)
+        || global.params.isOpenBSD || global.params.isSolaris || global.params.isHaiku)
     {
         realsize = 12;
         realpad = 2;
@@ -60,7 +60,7 @@ void Target::init()
 
     if (global.params.is64bit)
     {
-        if (global.params.isLinux || global.params.isFreeBSD || global.params.isSolaris)
+        if (global.params.isLinux || global.params.isFreeBSD || global.params.isSolaris || global.params.isHaiku)
         {
             realsize = 16;
             realpad = 6;
@@ -95,7 +95,7 @@ unsigned Target::alignsize(Type* type)
 
         case Tcomplex32:
             if (global.params.isLinux || global.params.isOSX || global.params.isFreeBSD
-                || global.params.isOpenBSD || global.params.isSolaris)
+                || global.params.isOpenBSD || global.params.isSolaris || global.params.isHaiku)
                 return 4;
             break;
 
@@ -105,7 +105,7 @@ unsigned Target::alignsize(Type* type)
         case Timaginary64:
         case Tcomplex64:
             if (global.params.isLinux || global.params.isOSX || global.params.isFreeBSD
-                || global.params.isOpenBSD || global.params.isSolaris)
+                || global.params.isOpenBSD || global.params.isSolaris || global.params.isHaiku)
                 return global.params.is64bit ? 8 : 4;
             break;
 
@@ -165,6 +165,10 @@ unsigned Target::critsecsize()
         // sizeof(pthread_mutex_t) for Solaris.
         return 24;
     }
+    else if (global.params.isHaiku)
+    {
+      return global.params.isLP64 ? 20 : 20;
+    }
     assert(0);
     return 0;
 }
@@ -184,7 +188,8 @@ Type *Target::va_listType()
              global.params.isFreeBSD ||
              global.params.isOpenBSD ||
              global.params.isSolaris ||
-             global.params.isOSX)
+             global.params.isOSX ||
+             global.params.isHaiku)
     {
         if (global.params.is64bit)
         {
@@ -379,4 +384,3 @@ int Target::checkVectorType(int sz, Type *type)
 void Target::loadModule(Module *m)
 {
 }
-

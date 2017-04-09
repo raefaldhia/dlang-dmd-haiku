@@ -633,7 +633,7 @@ code *prolog()
 Lagain:
     spoff = 0;
     char guessneedframe = needframe;
-//    if (needframe && config.exe & (EX_LINUX | EX_FREEBSD | EX_SOLARIS) && !(usednteh & ~NTEHjmonitor))
+//    if (needframe && config.exe & (EX_LINUX | EX_FREEBSD | EX_SOLARIS | EX_HAIKU) && !(usednteh & ~NTEHjmonitor))
 //      usednteh |= NTEHpassthru;
 
     /* Compute BP offsets for variables on stack.
@@ -2392,7 +2392,7 @@ reload:                                 /* reload result from memory    */
         case OPrelconst:
             c = cdrelconst(e,pretregs);
             break;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
         case OPgot:
             c = cdgot(e,pretregs);
             break;

@@ -910,7 +910,7 @@ void FuncDeclaration_toObjFile(FuncDeclaration *fd, bool multiobj)
         // Pull in RTL startup code (but only once)
         if (fd->isMain() && onlyOneMain(fd->loc))
         {
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
             objmod->external_def("_main");
             objmod->ehsections();   // initialize exception handling sections
 #endif
@@ -1112,7 +1112,7 @@ void FuncDeclaration_toObjFile(FuncDeclaration *fd, bool multiobj)
         pi++;
     }
 
-    if ((global.params.isLinux || global.params.isOSX || global.params.isFreeBSD || global.params.isSolaris) &&
+    if ((global.params.isLinux || global.params.isOSX || global.params.isFreeBSD || global.params.isSolaris || global.params.isHaiku) &&
          fd->linkage != LINKd && shidden && sthis)
     {
         /* swap shidden and sthis
@@ -1314,7 +1314,7 @@ void FuncDeclaration_toObjFile(FuncDeclaration *fd, bool multiobj)
         }
     }
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
     // A hack to get a pointer to this function put in the .dtors segment
     if (fd->ident && memcmp(fd->ident->toChars(), "_STD", 4) == 0)
         objmod->staticdtor(s);
@@ -1379,7 +1379,7 @@ unsigned totym(Type *tx)
         case Tbool:     t = TYbool;     break;
         case Tchar:     t = TYchar;     break;
         case Twchar:    t = TYwchar_t;  break;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
         case Tdchar:    t = TYdchar;    break;
 #else
         case Tdchar:
@@ -1462,7 +1462,7 @@ unsigned totym(Type *tx)
                 case LINKcpp:
                 Lc:
                     t = TYnfunc;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
                     if (I32 && retStyle(tf) == RETstack)
                         t = TYhfunc;
 #endif
@@ -1548,5 +1548,3 @@ elem *toEfilename(Module *m)
     // Turn static array into dynamic array
     return el_pair(TYdarray, el_long(TYsize_t, len), el_ptr(m->sfilename));
 }
-
-

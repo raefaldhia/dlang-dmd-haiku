@@ -32,7 +32,7 @@ static char __file__[] = __FILE__;      /* for tassert.h                */
 /* If we do our own EH tables and stack walking scheme
  * (Otherwise use NT Structured Exception Handling)
  */
-#if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+#if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU)
 #define OUREH 1
 #elif TARGET_WINDOS
 #define OUREH I64
@@ -376,4 +376,3 @@ void except_fillInEHTable(symbol *s)
     }
     assert(sz != 0);
 }
-

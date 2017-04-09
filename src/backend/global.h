@@ -502,7 +502,7 @@ void dwarf_CFA_offset(int reg, int offset);
 void dwarf_CFA_args_size(size_t sz);
 #endif
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
 elem * exp_isconst();
 elem *lnx_builtin_next_arg(elem *efunc,list_t arglist);
 char *lnx_redirect_funcname(const char *);
@@ -511,4 +511,3 @@ int  lnx_attributes(int hinttype,const void *hint, type **ptyp, tym_t *ptym,int 
 #endif
 
 #endif /* GLOBAL_H */
-

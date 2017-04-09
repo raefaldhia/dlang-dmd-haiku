@@ -20,6 +20,9 @@ ifeq (,$(OS))
   ifeq (SunOS,$(uname_S))
     OS:=solaris
   endif
+	ifeq (Haiku,$(uname_S))
+    OS:=haiku
+  endif
   ifeq (,$(OS))
     $(error Unrecognized or unsupported OS for uname: $(uname_S))
   endif
@@ -40,7 +43,7 @@ ifeq (,$(MODEL))
   ifneq (,$(findstring $(uname_M),x86_64 amd64))
     MODEL:=64
   endif
-  ifneq (,$(findstring $(uname_M),i386 i586 i686))
+  ifneq (,$(findstring $(uname_M),BePC i386 i586 i686))
     MODEL:=32
   endif
   ifeq (,$(MODEL))

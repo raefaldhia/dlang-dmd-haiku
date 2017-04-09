@@ -366,7 +366,7 @@ void outdata(symbol *s)
                     objmod->reftocodeseg(seg,offset,dt->DTabytes);
                 else
 #endif
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
                     objmod->reftodatseg(seg,offset,dt->DTabytes,dt->DTseg,flags);
 #else
                 /*else*/ if (dt->DTseg == DATA)
@@ -1491,4 +1491,3 @@ void Srcpos::print(const char *func)
 
 
 #endif /* !SPP */
-

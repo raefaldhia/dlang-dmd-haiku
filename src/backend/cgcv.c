@@ -17,11 +17,11 @@
 #include        <time.h>
 #include        <stdlib.h>
 
-#if _WIN32 || __linux__
+#if _WIN32 || __linux__ || __HAIKU__
 #include        <malloc.h>
 #endif
 
-#if __sun
+#if __sun || __HAIKU__
 #include        <alloca.h>
 #endif
 
@@ -2926,5 +2926,3 @@ unsigned cv_typidx(type *t)
 }
 
 #endif // !SPP
-
-

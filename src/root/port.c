@@ -579,7 +579,7 @@ longdouble Port::strtold(const char *p, char **endp)
 
 #endif
 
-#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__
+#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __HAIKU__
 
 #include <math.h>
 #if __linux__

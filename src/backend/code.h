@@ -292,7 +292,7 @@ void WRcodlst (code *c );
 cd_t cdcomma;
 cd_t cdloglog;
 cd_t cdshift;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
 cd_t cdindpic;
 #endif
 cd_t cdind;
@@ -678,4 +678,3 @@ inline void regimmed_set(int reg, targ_size_t e)
 #if __cplusplus && TX86
 }
 #endif
-

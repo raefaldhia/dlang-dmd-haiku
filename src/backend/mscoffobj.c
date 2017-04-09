@@ -18,7 +18,7 @@
 #include        <ctype.h>
 #include        <time.h>
 
-#if _WIN32 || __linux__
+#if _WIN32 || __linux__ || __HAIKU__
 #include        <malloc.h>
 #endif
 
@@ -1797,7 +1797,7 @@ char *obj_mangle2(Symbol *s,char *dest)
             strupr(dest);               // to upper case
             break;
         case mTYman_std:
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || __HAIKU__
             if (tyfunc(s->ty()) && !variadic(s->Stype))
 #else
             if (!(config.flags4 & CFG4oldstdmangle) &&

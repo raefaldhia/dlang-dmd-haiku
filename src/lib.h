@@ -28,7 +28,7 @@ class Library
     {
 #if TARGET_WINDOS
         return global.params.is64bit ? LibMSCoff_factory() : LibOMF_factory();
-#elif TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#elif TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
         return LibElf_factory();
 #elif TARGET_OSX
         return LibMach_factory();
@@ -44,4 +44,3 @@ class Library
 };
 
 #endif /* DMD_LIB_H */
-

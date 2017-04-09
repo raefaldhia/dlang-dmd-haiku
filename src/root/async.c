@@ -119,7 +119,7 @@ unsigned __stdcall startthread(void *p)
     return EXIT_SUCCESS;                // if skidding
 }
 
-#elif __linux__  // Posix
+#elif __linux__ || __HAIKU__ // Posix
 
 #include <errno.h>
 #include <pthread.h>

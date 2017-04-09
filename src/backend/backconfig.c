@@ -171,6 +171,23 @@ void out_config_init(
         config.flags3 |= CFG3pic;
     config.objfmt = OBJ_ELF;
 #endif
+#if TARGET_HAIKU
+    if (model == 64)
+    {   config.exe = EX_HAIKU64;
+        config.fpxmmregs = TRUE;
+    }
+    else
+    {
+        config.exe = EX_HAIKU;
+        if (!exe)
+            config.flags |= CFGromable; // put switch tables in code segment
+    }
+    config.flags |= CFGnoebp;
+    config.flags |= CFGalwaysframe;
+    if (!exe)
+        config.flags3 |= CFG3pic;
+    config.objfmt = OBJ_ELF;
+#endif
     config.flags2 |= CFG2nodeflib;      // no default library
     config.flags3 |= CFG3eseqds;
 #if 0
@@ -303,7 +320,7 @@ void util_set32()
         tysize[TYjhandle + i] = LONGSIZE;
         tysize[TYnptr + i] = LONGSIZE;
         tysize[TYnref + i] = LONGSIZE;
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_FREEBSD || TARGET_SOLARIS || TARGET_HAIKU
         tysize[TYldouble + i] = 12;
         tysize[TYildouble + i] = 12;
         tysize[TYcldouble + i] = 24;
@@ -335,7 +352,7 @@ void util_set32()
         tyalignsize[TYjhandle + i] = LONGSIZE;
         tyalignsize[TYnref + i] = LONGSIZE;
         tyalignsize[TYnptr + i] = LONGSIZE;
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_FREEBSD || TARGET_SOLARIS || TARGET_HAIKU
         tyalignsize[TYldouble + i] = 4;
         tyalignsize[TYildouble + i] = 4;
         tyalignsize[TYcldouble + i] = 4;
@@ -378,7 +395,7 @@ void util_set64()
         tysize[TYjhandle + i] = 8;
         tysize[TYnptr + i] = 8;
         tysize[TYnref + i] = 8;
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_SOLARIS || TARGET_OSX
+#if TARGET_LINUX || TARGET_FREEBSD || TARGET_SOLARIS || TARGET_OSX || TARGET_HAIKU
         tysize[TYldouble + i] = 16;
         tysize[TYildouble + i] = 16;
         tysize[TYcldouble + i] = 32;
@@ -406,7 +423,7 @@ void util_set64()
         tyalignsize[TYjhandle + i] = 8;
         tyalignsize[TYnptr + i] = 8;
         tyalignsize[TYnref + i] = 8;
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_FREEBSD || TARGET_SOLARIS || TARGET_HAIKU
         tyalignsize[TYldouble + i] = 16;
         tyalignsize[TYildouble + i] = 16;
         tyalignsize[TYcldouble + i] = 16;

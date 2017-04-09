@@ -193,9 +193,14 @@ One and only one of these macros must be set by the makefile:
 #define TARGET_SOLARIS  0               // target is a Solaris executable
 #endif
 
+// Set to 1 using the makefile
+#ifndef TARGET_HAIKU
+#define TARGET_HAIKU  0               // target is a Solaris executable
+#endif
+
 // This is the default
 #ifndef TARGET_WINDOS
-#define TARGET_WINDOS   (!(TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS))
+#define TARGET_WINDOS   (!(TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU))
 #endif
 
 #if __GNUC__
@@ -271,7 +276,7 @@ typedef long double longdouble;
 
 // Precompiled header variations
 #define MEMORYHX        (_WINDLL && _WIN32)     // HX and SYM files are cached in memory
-#define MMFIO           (_WIN32 || __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun)  // if memory mapped files
+#define MMFIO           (_WIN32 || __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun || __HAIKU__)  // if memory mapped files
 #define LINEARALLOC     _WIN32  // if we can reserve address ranges
 
 // H_STYLE takes on one of these precompiled header methods
@@ -476,7 +481,7 @@ typedef unsigned        targ_uns;
 #define DOUBLESIZE      8
 #if TARGET_OSX
 #define LNGDBLSIZE      16      // 80 bit reals
-#elif TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#elif TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
 #define LNGDBLSIZE      12      // 80 bit reals
 #else
 #define LNGDBLSIZE      10      // 80 bit reals
@@ -496,7 +501,7 @@ typedef unsigned        targ_uns;
 #define REGMASK         0xFFFF
 
 // targ_llong is also used to store host pointers, so it should have at least their size
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_OSX || MARS
+#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_OSX || MARS || TARGET_HAIKU
 typedef targ_llong      targ_ptrdiff_t; /* ptrdiff_t for target machine  */
 typedef targ_ullong     targ_size_t;    /* size_t for the target machine */
 #else
@@ -527,14 +532,14 @@ typedef targ_uns        targ_size_t;    /* size_t for the target machine */
 #define OMFOBJ          TARGET_WINDOS
 #endif
 #ifndef ELFOBJ
-#define ELFOBJ          (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+#define ELFOBJ          (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU)
 #endif
 #ifndef MACHOBJ
 #define MACHOBJ         TARGET_OSX
 #endif
 
 #define SYMDEB_CODEVIEW TARGET_WINDOS
-#define SYMDEB_DWARF    (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_OSX)
+#define SYMDEB_DWARF    (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_OSX || TARGET_HAIKU)
 
 #define TOOLKIT_H
 
@@ -606,7 +611,7 @@ typedef int bool;
 #endif
 
 #if _WINDLL
-#define COPYRIGHT "Copyright © 2001 Digital Mars"
+#define COPYRIGHT "Copyright ï¿½ 2001 Digital Mars"
 #else
 #ifdef DEBUG
 #define COPYRIGHT "Copyright (C) Digital Mars 2000-2013.  All Rights Reserved.\n\
@@ -733,11 +738,15 @@ struct Config
 #define EX_SOLARIS64    0x200000
 #define EX_OPENBSD      0x400000
 #define EX_OPENBSD64    0x800000
+#define EX_HAIKU        0x1000000
+#define EX_HAIKU64      0x2000000
+
 
 #define EX_flat         (EX_OS2 | EX_NT | EX_LINUX | EX_WIN64 | EX_LINUX64 | \
                          EX_OSX | EX_OSX64 | EX_FREEBSD | EX_FREEBSD64 | \
                          EX_OPENBSD | EX_OPENBSD64 | \
-                         EX_SOLARIS | EX_SOLARIS64)
+                         EX_SOLARIS | EX_SOLARIS64 | \
+                         EX_HAIKU | EX_HAIKU64)
 #define EX_dos          (EX_DOSX | EX_ZPM | EX_RATIONAL | EX_PHARLAP | \
                          EX_COM | EX_MZ /*| EX_WIN16*/)
 
@@ -792,7 +801,7 @@ struct Config
 #define CFG3relax       0x200   // relaxed type checking (C only)
 #define CFG3cpp         0x400   // C++ compile
 #define CFG3igninc      0x800   // ignore standard include directory
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
 #define CFG3mars        0x1000  // use mars libs and headers
 #define NO_FAR          (TRUE)  // always ignore __far and __huge keywords
 #else
@@ -804,7 +813,7 @@ struct Config
 #define CFG3cppcomment  0x8000  // allow C++ style comments
 #define CFG3wkfloat     0x10000 // make floating point references weak externs
 #define CFG3digraphs    0x20000 // support ANSI C++ digraphs
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
 #define CFG3semirelax   0x40000 // moderate relaxed type checking
 #endif
 #define CFG3pic         0x80000 // position independent code
@@ -1013,7 +1022,7 @@ union eve
 #define SYMBOLZERO
 #endif
 
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_HAIKU
 #define UNIXFIELDS      (unsigned)-1,(unsigned)-1,0,0,
 #elif TARGET_OSX
 #define UNIXFIELDS      (unsigned)-1,(unsigned)-1,0,0,0,
